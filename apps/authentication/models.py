@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin)
-# from .views import ImageUploadView
+import uuid
 
 
 class UserManager(BaseUserManager):
@@ -60,6 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     photo = models.ImageField(upload_to=img_path, blank=False, null=False)
+    is_verified = models.BooleanField(default=False)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -74,3 +75,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return True
 
+
+class EmailVerifyToken(models.Model):
+    """
+    Email Verification Token.
+    """
+    token = models.CharField(max_length=100, default=uuid.uuid4(), primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
