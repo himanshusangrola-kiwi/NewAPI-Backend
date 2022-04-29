@@ -1,17 +1,21 @@
 ERROR_CODE = {
+    'user': {
+        'wrong_credentials': 'Invalid credentials, Try Again',
+        'is_active': 'Account disabled, Contact Admin',
+        'is_verified': 'Email is not Verified'
+    },
+
     'password': {
-        'blank': 'PASSWORDS_CANNOT_BE_BLANK',
-        'passwords_match': 'PASSWORDS_DO_NOT_MATCH'
+        'passwords_match': 'The passwords do not match'
     },
 
     'username': {
-        'username_exist': 'USERNAME_ALREADY_EXISTS'
+        'username_exist': 'A User with Same Username Already Exist'
     },
 
     'email': {
-        'blank': 'EMAIL_CANNOT_BE_BLANK'
+        'blank': 'The Email Field cannot be blank'
     }
-
 }
 
 
