@@ -5,12 +5,14 @@ import uuid
 
 class UserManager(BaseUserManager):
     """
-        A class to define User Fields and Save User
+    A class to define User Fields and Save User
     """
 
     def create_user(self, username, email, password=None):
         """
-            A function to create a user and Save it
+        A function to create a user and Save it
+        :param : username, email, password
+        :return : user
         """
         if not username:
             raise ValueError('Users must have an username')
@@ -27,7 +29,9 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, username, email, password=None):
         """
-            A function to create a superuser
+        A function to create a superuser
+        :param : username, email, password
+        :return : user
         """
         user = self.create_user(
             username=username,
@@ -42,6 +46,11 @@ class UserManager(BaseUserManager):
 
 
 def img_path(instance, filename):
+    """
+    function to give the path for the image to upload to
+    :param : instance , filename
+    :return : Path of Image where it will to upload
+    """
     return f"{instance.username}/{filename}"
 
 
@@ -72,6 +81,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_perm(self, perm, obj=None):
         """
             A function to tell if the user has special permissions
+            :params : perm, obj
+            :return : True
         """
         return True
 
