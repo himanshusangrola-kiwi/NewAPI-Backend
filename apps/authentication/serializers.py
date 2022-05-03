@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers, status
 from apps.authentication.models import User, EmailVerifyToken
-from apps.common import app_message
+from apps.common import constant
 # from django.contrib import auth
 # from rest_framework.response import Response
 
@@ -22,7 +22,7 @@ class SignupSerializer(serializers.ModelSerializer):
         :return: Validated Data or Error
         """
         if data['password'] != data['password2']:
-            raise serializers.ValidationError(app_message.ERROR_CODE['password']['passwords_match'])
+            raise serializers.ValidationError(constant.ERROR['password']['passwords_match'])
         return data
 
     def validate_username(self, data):
@@ -32,7 +32,7 @@ class SignupSerializer(serializers.ModelSerializer):
         :return: Validated data or Error
         """
         if User.objects.filter(username=data).exists():
-            raise serializers.ValidationError(app_message.ERROR_CODE['username']['username_exist'])
+            raise serializers.ValidationError(constant.ERROR['username']['username_exist'])
         return data
 
     def create(self, validated_data):
@@ -67,7 +67,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     """
-        Serializer Class to Login with Registered User
+    Serializer Class to Login with Registered User
     """
     email = serializers.EmailField(max_length=255, min_length=3)
     password = serializers.CharField(max_length=70, min_length=4, write_only=True)
@@ -84,11 +84,11 @@ class LoginSerializer(serializers.ModelSerializer):
 
         user = authenticate(email=email, password=password)
         if not user:
-            raise serializers.ValidationError(app_message.ERROR_CODE['user']['wrong_credentials'])
+            raise serializers.ValidationError(constant.ERROR['user']['wrong_credentials'])
         if not user.is_active:
-            raise serializers.ValidationError(app_message.ERROR_CODE['user']['is_active'])
+            raise serializers.ValidationError(constant.ERROR['user']['is_active'])
         if not user.is_verified:
-            raise serializers.ValidationError(app_message.ERROR_CODE['user']['is_verified'])
+            raise serializers.ValidationError(constant.ERROR['user']['is_verified'])
 
         return {
             'email': user.email,
@@ -105,3 +105,26 @@ class EmailVerifyTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmailVerifyToken
         fields = '__all__'
+
+
+# class ChangePasswordSerializer(serializers.ModelSerializer):
+#     """
+#     Serializer to Change Password of a user
+#     """
+#     password = serializers.CharField(max_length=70, min_length=4, write_only=True, required=True)
+#     new_password = serializers.CharField(max_length=70, min_length=4, write_only=True, required=True)
+#     new_password2 = serializers.CharField(max_length=70, min_length=4, write_only=True, required=True)
+#
+#     def validate(self, data):
+#         """
+#         function to match password and confirm password
+#         :param data: data
+#         :return: Validated Data or Error
+#         """
+#         if data['new_password'] != data['new_password2']:
+#             raise serializers.ValidationError(constant.ERROR['password']['passwords_match'])
+#         return data
+#
+#     class Meta:
+#         model = User
+#         fields = ['password', 'new_password', 'new_password2']

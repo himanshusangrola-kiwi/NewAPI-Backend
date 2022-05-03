@@ -141,3 +141,28 @@ class LoginView(viewsets.GenericViewSet):
             return Response({'msg': 'Login Success', 'token': token}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Wrong Credentials", "status": False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class ChangePassword(viewsets.GenericViewSet):
+    # """
+    # A class to Change Password of any User
+    # """
+    # serializer_class = ChangePasswordSerializer
+    # permission_classes = [IsAuthenticated]
+    # # queryset = User.objects.all()
+    #
+    # def update(self, request):
+    #     """
+    #     Change Password of Logged-in User
+    #     :param request: wsgi request
+    #     :return: Password Change Success Message or Error Message
+    #     """
+    #     serializer = self.serializer_class(data=request.data)
+    #     if serializer.is_valid(raise_exception=True):
+    #         if not User.object.(serializer.data.get("password")):
+    #             return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+    #         User.object.set_password(serializer.data.get("new_password"))
+    #         User.object.save()
+    #         return Response("Success.", status=status.HTTP_200_OK)
+    #
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
